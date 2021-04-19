@@ -17,17 +17,21 @@ namespace Lift.Entities
                 floor.ButtonPressedForCallingTheLift += this.LiftRequested;
                 return floor;
             }).ToArray();
+
             Lift = new Lift(liftCapacity);
+
+            Lift.LiftArriverAtAFloor += LiftArrivedAtAFloor;
         }
 
         public void LiftRequested(Direction direction, int floorNumberRequestedOn)
         {
-            if (liftCapacity > peopleintheList){
 
-               Lift.LiftOperation(direction);
-            }
+        }
 
-
+        public void LiftArrivedAtAFloor(int floorNumber)
+        {
+            var floor = this.Floors.Single(floor => floor.FloorNumber == floorNumber);
+            floor.LiftHasArrived(this.Lift);
         }
     }
 }

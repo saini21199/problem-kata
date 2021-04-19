@@ -1,46 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Lift.Enums;
 
 namespace Lift.Entities
 {
     public class Lift
     {
-        public int Capacity { get; set; }
+        #region "Events"
+
+        public event LiftArrivedAtAFloor LiftArriverAtAFloor;
+
+        #endregion
+
+        #region "Data"
+        public int Capacity { get; }
         public List<Person> People { get; set; }
         public int CurrentFloor { get; set; }
+        public Direction LiftDirection { get; set; }
+
+        #endregion
 
         public Lift(int capacity)
         {
             this.CurrentFloor = 0;
             this.Capacity = capacity;
-            
-            Floor floor = new Floor();
-            Person person = new Person();
+            this.LiftDirection = Direction.Stationary;
         }
-        // this function will act as a command to call the lift in which direction 
 
-        public void LiftOperation( Direction direction){
-            if(direction == direction.movingUp){
-                MoveUp();
-            }
-            else if(direction == direction.movingDown){
-                MoveDown();
-            }
+        public void Start()
+        {
+            this.LiftDirection = Direction.GoingUp;
+            this.LiftArriverAtAFloor(this.CurrentFloor);
+        }
+
+        public void OnboardPeople(List<Person> people)
+        {
+            this.People.AddRange(people);
+        }
+
+        public List<Person> OffboardPeople(int floorNumber)
+        {
+            var peopleToOffboard = this.People.Where(p => p.DestinationFloor == floorNumber).ToList();
+            this.People = this.People.Where(p => p.DestinationFloor != floorNumber).ToList();
+            return peopleToOffboard;
+        }
+
+        public int GetAvailableCapacity()
+        {
+            return this.Capacity - this.People.Count;
         }
 
         private void MoveUp()
         {
-            this.CurrentFloor = this.CurrentFloor + 1;
-            People.Add(person.destinationFloor);
-            
+
         }
 
         private void MoveDown()
         {
-            this.CurrentFloor = this.CurrentFloor -1;
-            People.Add(person.destinationFloor);
-            
+
         }
     }
 }

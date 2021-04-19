@@ -20,7 +20,9 @@ namespace Lift
                 new int[] {1, 10, 2},
                 new int[] {1, 4, 3, 2},
             };
+
             int liftCapacity = 4;
+
             var building = new Building(liftCapacity, rawInput);
         }
     }

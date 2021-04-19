@@ -7,9 +7,12 @@ namespace Lift.Entities
     {
 
         public event ButtonPressedForCallingTheLift ButtonPressed;
+
         public int CurrentFloor { get; set; }
         public int DestinationFloor { get; set; }
+
         public WaitingStatus WaitingStatus { get; set; }
+
         public Direction DirectionToGoIn
         {
             get
@@ -30,11 +33,14 @@ namespace Lift.Entities
             this.ButtonPressed(this.DirectionToGoIn);
         }
 
-        public void fun(){
-               while(this.CurrentFloor!= this.DestinationFloor){
-                    this.CurrentFloor +=1;
-                    l
-               }
+        public void SetReached()
+        {
+            this.WaitingStatus = WaitingStatus.Reached;
+        }
+
+        public void SetOnboard()
+        {
+            this.WaitingStatus = WaitingStatus.BoardedLift;
         }
     }
 }
